@@ -108,7 +108,7 @@
         var values = [];
         newKeys.forEach(function(pair) {
           var value = pair.value;
-          if (typeof pair.value.join !== "undefined") {
+          if (typeof pair.value !== "undefined" && typeof pair.value.join !== "undefined") {
             value = pair.value.join(";");
           }
           values.push(value);
